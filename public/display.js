@@ -48,7 +48,8 @@ function render() {
   }
 
   const rect = stageEl.getBoundingClientRect();
-  const { w, h } = computeCardSize(sorted.length, rect.width, rect.height);
+  const STAGE_TOP_PADDING = 34; // reserved space above cards for the crown, see CSS padding-top on #stage
+  const { w, h } = computeCardSize(sorted.length, rect.width, rect.height - STAGE_TOP_PADDING);
 
   sorted.forEach((c) => {
     const pct = totalVotes > 0 ? Math.round((c.votes / totalVotes) * 100) : 0;
@@ -63,11 +64,13 @@ function render() {
 
     card.innerHTML = `
       ${isLeader ? '<div class="crown">👑</div>' : ''}
-      <img src="${photoUrl}" alt="${c.name}">
-      <div class="overlay">
-        <div class="name">${c.name}</div>
-        <div class="pct">${pct}%</div>
-        <div class="votes">${c.votes} votes</div>
+      <div class="card-media">
+        <img src="${photoUrl}" alt="${c.name}">
+        <div class="overlay">
+          <div class="name">${c.name}</div>
+          <div class="pct">${pct}%</div>
+          <div class="votes">${c.votes} votes</div>
+        </div>
       </div>
     `;
     stageEl.appendChild(card);
