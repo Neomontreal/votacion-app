@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Votación</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin-bottom: 20px; }
+  h2 { font-size: 1.05rem; margin-top: 32px; margin-bottom: 10px; color: #93c5fd; }
+  .card { background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; margin-top: 10px; }
+  input[type=text], input[type=number], input[type=url] {
+    width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #334155;
+    background: #0f172a; color: #f1f5f9; font-size: 0.9rem;
+  }
+  .row { display: flex; gap: 10px; }
+  .row > div { flex: 1; }
+  button {
+    background: #38bdf8; color: #0f172a; border: none; padding: 9px 16px;
+    border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; margin-top: 12px;
+  }
+  button.secondary { background: #334155; color: #f1f5f9; }
+  button.danger { background: #7f1d1d; color: #fecaca; }
+  .candidate-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #334155; }
+  .candidate-row:last-child { border-bottom: none; }
+  .muted { color: #94a3b8; font-size: 0.85rem; }
+  .toggle-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  a.public-link { color: #38bdf8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Panel de administración</h1>
+  <p class="muted">Enlace público para votar: <a class="public-link" id="publicLink" href="/">/</a></p>
+  <p class="muted">Pantalla de resultados en vivo (para proyectar): <a class="public-link" href="/display.html" target="_blank">/display.html</a></p>
+
+  <h2>Estado de la votación</h2>
+  <div class="card">
+    <div class="toggle-row">
+      <input type="checkbox" id="votingOpen" />
+      <label style="margin:0;" for="votingOpen">Votación abierta</label>
+    </div>
+    <label for="title">Título mostrado a los votantes</label>
+    <input type="text" id="title" />
+    <button id="saveTitleBtn">Guardar título / estado</button>
+    <p class="muted" id="totalVotes"></p>
+    <button class="danger" id="resetBtn">Reiniciar votos</button>
+  </div>
+
+  <h2>Restricción por ubicación (opcional)</h2>
+  <div class="card">
+    <p class="muted">Si defines latitud, longitud y un radio mayor a 0, solo se podrá votar dentro de esa área.</p>
+    <div class="row">
+      <div>
+        <label for="lat">Latitud</label>
+        <input type="number" step="any" id="lat" placeholder="ej. 4.710989" />
+      </div>
+      <div>
+        <label for="lng">Longitud</label>
+        <input type="number" step="any" id="lng" placeholder="ej. -74.072092" />
+      </div>
+    </div>
+    <label for="radius">Radio permitido (metros)</label>
+    <input type="number" id="radius" placeholder="0 = sin restricción" />
+    <button id="useMyLocationBtn" class="secondary">Usar mi ubicación actual</button>
+    <button id="saveLocationBtn">Guardar ubicación</button>
+  </div>
+
+  <h2>Candidatos (máximo 9)</h2>
+  <div class="card">
+    <p class="muted">Usa fotos en formato vertical 3:4 (ej. 600x800 px) para que se vean bien en la pantalla de resultados.</p>
+    <div id="candidatesList"></div>
+    <label for="newName">Nuevo candidato</label>
+    <input type="text" id="newName" placeholder="Nombre" />
+    <label for="newPhoto">Foto (URL, opcional, formato 3:4)</label>
+    <input type="url" id="newPhoto" placeholder="https://..." />
+    <button id="addCandidateBtn">Agregar candidato</button>
+  </div>
+</div>
+
+<script src="/admin.js"></script>
+</body>
+</html>
